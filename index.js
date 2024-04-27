@@ -54,7 +54,38 @@ async function run() {
       res.send(result);
     });
 
-    app.delete("/myCraft/:id", async (req, res) => {
+    app.get("/craft/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await craftCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.put("/craft/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedCraft = req.body;
+
+      const craft = {
+        $set: {
+          item_name: updatedCraft.item_name,
+          subcategory_name: updatedCraft.subcategory_name,
+          short_description: updatedCraft.short_description,
+          stock_status: updatedCraft.stock_status,
+          price: updatedCraft.price,
+          rating: updatedCraft.rating,
+          processing_time: updatedCraft.processing_time,
+          customization: updatedCraft.customization,
+          photo: updatedCraft.photo,
+        },
+      };
+
+      const result = await craftCollection.updateOne(filter, craft, options);
+      res.send(result);
+    });
+
+    app.delete("/craft/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await craftCollection.deleteOne(query);
