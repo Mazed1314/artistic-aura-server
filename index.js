@@ -32,6 +32,9 @@ async function run() {
     // await client.connect();
 
     const craftCollection = client.db("artisticAuraDB").collection("craft");
+    const craftCategoryCollection = client
+      .db("artisticAuraDB")
+      .collection("categoryCraft");
 
     app.get("/craft", async (req, res) => {
       const cursor = craftCollection.find();
@@ -44,6 +47,12 @@ async function run() {
       const result = await craftCollection
         .find({ email: req.params.email })
         .toArray();
+      res.send(result);
+    });
+
+    app.get("/categoryCraft", async (req, res) => {
+      const cursor = craftCategoryCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
