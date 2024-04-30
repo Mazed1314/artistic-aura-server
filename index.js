@@ -56,6 +56,14 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/categoryCraft/:subcategory_name", async (req, res) => {
+      console.log(req.params.subcategory_name);
+      const result = await craftCategoryCollection
+        .find({ subcategory_name: req.params.subcategory_name })
+        .toArray();
+      res.send(result);
+    });
+
     app.post("/addCraft", async (req, res) => {
       const addNewItem = req.body;
       console.log(addNewItem);
